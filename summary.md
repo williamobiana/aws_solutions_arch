@@ -157,60 +157,86 @@ BIGDATA: ``REDSHIFT``, ``EMR``, ``KINESIS``, ``ATHENA``, ``GLUE``, ``QUICKSIGHT`
 * manage data streaming using ``MSK`` (managed streaming for Kafka) and send logs for analysis or storage
 * search for log files, analyze the log files, visualize and create BI reports with ``OPENSEARCH``
 
-SECURITY: 
+SECURITY: CLOUDTRAIL SHEILD WAF GUARDDUTY FIREWALL_MANAGER MACIE INSPECTOR KMS CLOUDHSM SECRETS MANAGER PARAMETER STORE PRESIGNED(COOKIES) IAM_DOCS CERTIFICATE_MANAGER AUDIT_MANAGERS ARTIFACTS COGNITO DETECTIVE NETWORK_FIREWALL SECURITY_HUB 
+* log the API calls with cloudtrail
+* protect the application on layer 3 and 4 with sheid
+* filter the traffic on layer 7 with WAF (web app firewall)
+* guard the network with threat detection using guardDuty
+* use the central firewall manager to manage WAF on multiple AWS account
+* monitor s3 buckets containing sensitive documents with MACIE
+* perform the venureability scans on ec2 and VPC with incepector
+* manage the encryption keys on KMS and CLOUDHSM 
+* store the secrets credentials and perform key rotations in the secret manager
+* strategy: to save costs on secret manager, use parameter store with limit of 10000 parameters
+* temporarily share s3 objects using signed_URLs or cookies
+* use the other user's security credentials, and other parameters to create the presigned_URL 
+* if the user wants temporary access to multiple buckets, then use a presigned cookie
+* create and manage SSL certificates with the certificate manager, intergate it with API_gate,load_balancer, the CLOUDFRONT dashboard to track the flow of traffic
+* automate our auditing to ensure we are up to date with AUDIT_MANAGER
+* download the reports with ARTIFACTS
+* authenticate access to application using cognito
+* with cognito, use userpools to get tokens, exchange tokens for credentials with identitypools, use credential to access the services
+* analyze and identify root cause of suspicious activity using detective
+* protect the vpc with network firewall, and use it together with firewall manager
+* collect security data with security hub
+* filter network traffic before it reached IGW with network manager, use it in combination with firewall manager to manage the WAF on multiple AWS account
 
+MONITORING: CLOUDWATCH CLOUDWATCH_LOGS PROMETHEUS GRAFANA
+* check logs on a high level with cloudwatch
+* cloudWatch Logs, allows us to monitor, store and access logs files from diffrent sources.
+* to process the logs and check on a high level, use cloudwatch
+* to process the logs in real time, use kinesis
+* to query the logs, use cloudwatch logs insights
+* query the metrics and log of diffrent services and create a visualization dashboard with grafana
+* to visualize containers, connect grafana to prometheus
 
+AUTOMATION: CLOUDFORMATION ELASTIC_BEANSTALK SYSTEMS_MANAGER
+* automate the creation and deployment of infrastruture with cloudformation
+* automate the creation, deployment and management of all the services needed to run an application with Elastic_beanstalk
+* organize the tools to automate the management of ec2 architecture with systems_manager
 
+CACHING: CLOUDFRONT ELASTIC_CACHE DAX GLOBAL_ACCELERATOR
+* use CloudFront CDN to deliver the stattic content to global users, 
+* Elastic cache use 2 open source technologies (memcache and Redis)
+* memcache is a simple cache
+* redis is a cache with a NoSQL database
+* DAX is an in-memory cache for DynamoDB
+* setup a Global accelerator networking service in front of our loadbalancer for our app, to solve the problem of IP caching
 
+GOVERNANCE: ORGANIZATIONS RAM ROLEACCESS CONFIG DIRECTORY STORE COST_EXPLORER BUDGETS CUR COMPUTE_OPTIMIZER TRUSTED_ADVISOR CONTROL_TOWER LICENCE_MANAGER HEALTH SERVICE_CATALOG PROTON WELL_ARCHITECTED_TOOL 
+* centralize all the service control polices and the logs from cloudtrail in the main account using organizations
+* strategy: if we need to share resources directly to other accounts in the same organization use resource account manager RAM, alternatively, we can assume the role of another account to access the resources using CROSS_ACCOUNT_ROLE_ACCESS. it is better than creating new IAM credentials for RAM
+* if we need to set up a rule or configuration for a new account and manage any changes to the rule for compliance, use config
+* strategy: when managing our users, use SSO for internal users and COGNITO for external users
+* track costs with COST_MANAGEMENT, use in combination with EXPLORER, BUDGETS, COST, USAGE_REPORTS and COMPUTE_OPTIMIZER
+* audit our best practice with trusted adviser
+* manage all the accounts and licences with CONTROL_TOWER and LICENCE_MANAGER, we can add guardrails to control tower with SCPs and CONFIG
+* strategy: we can provision pre-approved services with SERVICE_CATALOG, this will be written with CLOUDFORMATION. 
+* manage our resource performance with health
 
+MIGRATION: SNOWFAMILY DATASYNC TRANSFER_FAMILY STORAGE_GATEWAY MIGRATION_HUB APPLICATION_DISCOVERY_SERVICE APPLICATION_MIGRATION_SERVICE SERVER_MIGRATION_SERVICE
+* depending on the TB of data we are moving, we will select a member of the snowfamily by size
+* to merge our on-prem with AWS, we can use storage gateway, if we run out of space, we can use file gateway
+* run a 1 time migrarion to EFx and FSx with data sync and if we need to transfer our old apps to AWS or allow the old apps use s3m then we can use TRANSFER_FAMILY
+* use the migration hub to organize and manage the migration steps for databases and servers
+* collect the usage and configuration data for our application, databases and servers with DISCOVERY_SERVICE and migrate them with MIGRATION_SERVICE
 
+FRONTEND_WEB_MOBILE: AMPLIFY DEVICE_FARM PINPOINT
+* use amplify to build full stack applications
+* use device farm to test andriod, ios and web apps
+* pinpoint is intended for marketers to communicate with users
 
+ML: COMPREHEND KENDRA TEXTRACT TIME_SERIES FORECAST FRAUD_DETECTOR POLLY TRANSCRIBE LEX REKOGNITION SAGEMAKER
+* analyse texts using AWS comprehend, kendra, textract
+* predict time-series data using amazon forecast
+* protect accounts with amazon fraud detector
+* work with text and speech using AWS polly, transcribe, and lex to create alexa models
+* analyzing images and facial regocnition with Rekognition
+* use Sagemaker to train ML learning models
 
-
-
-
-
-## Word Association
-S3 = storage
-EBS/EFS = storgage
-EC2 = VM
-RDS = Database (MySQL/relational)
-Aurora = 5x RDS Database
-DynamoDB = Database (NoSQL/non-relational)
-VPC = datacenter/network
-SQS = queue
-SNS = notification
-API-GATEWAY = communication
-CLOUDWATCH = check logs (high level)
-CLOUDTRAIL = record details of the logs (granular)
-EVENTBRIDGE = customized version of cloudwatch for checking events a.k.a cloudwatch events
-SNS + CLOUDWATCH = get notifaction and check the logs
-SES = email service
-WAF = firewall
-WAF + API-GATEWAY = firewall in front of communication interface
-LAMBDA = automated short and small tasks
-BATCH = automaed long and heavy tasks in batches
-AmazonMQ = message broker
-ApacheMQ = message broker engine
-RabbitMQ = message broker engine
-SNS+SQS = simpler alternative for AmazonMQ
-STEP-FUNCTIONS = automated complex workflow/tasks of services
-APPFLOW = collect data from 3rd party apps
-AURORA SERVERLESS = unpreditctable workload for databases
-APPSYNC = GraphQL API query
-REDSHIFT = data warehouse
-EMR = run ETL workloads and process big data
-KINESIS = real time data streaming
-KINESIS DATASTREAM = real time data streaming for processing in compute
-KINESIS FIREHOSE= real time data streaming for transfer to storage
-ATHENA = serveless SQL
-GLUE = serverless ETL
-ATHENA+GLUE = run ETL workload and query with SQL
-QUICKSIGHT = BI visualization tool
-DATAPIPELINE = automated data pipeline to manage ETL workloads
-EMR+GLUE = process bigdata and run ETL workload
-MSK = manage streaming for Kafka
-OPENSEARCH = search, analyze, visualize log files for BI reports
+MEDIA: TRANSCODER KINESIS_VIDEO_STREAMS
+* convert(transcode) media files with transcoder
+* stream media with kinesis video streams
 
 
 

@@ -236,7 +236,7 @@ Transactions
 * all or nothing transaction
 
 
-## Saving data with dynamoDM backups
+## Saving data with dynamoDB backups
 ondemand backup and restore
 point in time recovery
 
